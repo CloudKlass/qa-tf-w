@@ -1,3 +1,8 @@
+module "aks" {
+  source  = "Azure/aks/azurerm"
+  version = "5.0.0"
+}
+
 resource "random_id" "prefix" {
   byte_length = 8
 }
