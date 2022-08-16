@@ -64,48 +64,10 @@ module "aks" {
   network_plugin                          = "azure"
   network_policy                          = "azure"
   os_disk_size_gb                         = 60
-  private_cluster_enabled                 = true
+  private_cluster_enabled                 = false #This is only being disabled due to the lab. This exposes the cluster API public. SHOULD create a VM in VNET and access from there with kubectl commands
   rbac_aad_managed                        = true
   sku_tier                                = "Paid"
   vnet_subnet_id                          = azurerm_subnet.lab6T.id
-
-  depends_on = [azurerm_resource_group.lab6]
-}
-
-module "aks_without_monitor" {
-  source  = "Azure/aks/azurerm"
-
-  prefix                            = "prefix2-${random_id.prefix.hex}"
-  resource_group_name               = azurerm_resource_group.lab6.name
-  azure_policy_enabled              = true
-  log_analytics_workspace_enabled   = true
-  role_based_access_control_enabled = true
-  local_account_disabled            = true
-  net_profile_pod_cidr              = "10.1.0.0/16"
-  private_cluster_enabled           = true
-  rbac_aad_managed                  = true
-
-  depends_on = [azurerm_resource_group.lab6]
-}
-
-module "aks_cluster_name" {
-  source  = "Azure/aks/azurerm"
-
-  prefix              = "prefix"
-  resource_group_name = azurerm_resource_group.lab6.name
-  # Not necessary, just for demo purpose.
-  admin_username                       = "azureuser"
-  azure_policy_enabled                 = true
-  cluster_log_analytics_workspace_name = "lab6-cluster"
-  cluster_name                         = "lab6-cluster"
-  log_analytics_workspace_enabled      = true
-  role_based_access_control_enabled    = true
-  identity_ids                         = [azurerm_user_assigned_identity.lab6T.id]
-  identity_type                        = "UserAssigned"
-  local_account_disabled               = true
-  net_profile_pod_cidr                 = "10.1.0.0/16"
-  private_cluster_enabled              = true
-  rbac_aad_managed                     = true
 
   depends_on = [azurerm_resource_group.lab6]
 }
