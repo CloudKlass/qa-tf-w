@@ -1,7 +1,3 @@
-module "aks" {
-  source  = "Azure/aks/azurerm"
-  version = "5.0.0"
-}
 
 resource "random_id" "prefix" {
   byte_length = 8
@@ -14,7 +10,7 @@ resource "azurerm_resource_group" "lab6" {
 resource "azurerm_virtual_network" "lab6T" {
   name                = "${random_id.prefix.hex}-vn"
   resource_group_name = azurerm_resource_group.lab6.name
-  address_space       = ["10.1.0.0/16"]
+  address_space       = ["10.10.0.0/16"]
   location            = azurerm_resource_group.lab6.location
 }
 
@@ -22,7 +18,7 @@ resource "azurerm_subnet" "lab6T" {
   name                 = "${random_id.prefix.hex}-sn"
   resource_group_name  = azurerm_resource_group.lab6.name
   virtual_network_name = azurerm_virtual_network.lab6T.name
-  address_prefixes     = ["10.1.1.0/24"]
+  address_prefixes     = ["10.10.0.0/24"]
 }
 
 resource "azurerm_user_assigned_identity" "lab6T" {
@@ -32,7 +28,8 @@ resource "azurerm_user_assigned_identity" "lab6T" {
 }
 
 module "aks" {
-  source = "../.."
+   source  = "Azure/aks/azurerm"
+  version = "5.0.0"
 
   prefix                    = "prefix-${random_id.prefix.hex}"
   resource_group_name       = azurerm_resource_group.lab6.name
@@ -44,7 +41,7 @@ module "aks" {
   agents_max_count = 2
   agents_max_pods  = 100
   agents_min_count = 1
-  agents_pool_name = "lab6Tnodepool"
+  agents_pool_name = "lab6nodes"
   agents_tags = {
     "Agent" : "agentTag"
   }
@@ -53,13 +50,13 @@ module "aks" {
   client_id                               = var.client_id
   client_secret                           = var.client_secret
   enable_auto_scaling                     = true
-  enable_host_encryption                  = true
+  enable_host_encryption                  = false
   http_application_routing_enabled        = true
   ingress_application_gateway_enabled     = true
   log_analytics_workspace_enabled         = true
   role_based_access_control_enabled       = true
   ingress_application_gateway_name        = "${random_id.prefix.hex}-agw"
-  ingress_application_gateway_subnet_cidr = "10.52.1.0/24"
+  ingress_application_gateway_subnet_cidr = "10.10.1.0/24"
   local_account_disabled                  = true
   net_profile_dns_service_ip              = "10.0.0.10"
   net_profile_docker_bridge_cidr          = "170.10.0.1/16"
@@ -76,7 +73,7 @@ module "aks" {
 }
 
 module "aks_without_monitor" {
-  source = "../.."
+  source  = "Azure/aks/azurerm"
 
   prefix                            = "prefix2-${random_id.prefix.hex}"
   resource_group_name               = azurerm_resource_group.lab6.name
@@ -92,15 +89,15 @@ module "aks_without_monitor" {
 }
 
 module "aks_cluster_name" {
-  source = "../.."
+  source  = "Azure/aks/azurerm"
 
   prefix              = "prefix"
   resource_group_name = azurerm_resource_group.lab6.name
   # Not necessary, just for demo purpose.
   admin_username                       = "azureuser"
   azure_policy_enabled                 = true
-  cluster_log_analytics_workspace_name = "lab6T-cluster"
-  cluster_name                         = "lab6T-cluster"
+  cluster_log_analytics_workspace_name = "lab6-cluster"
+  cluster_name                         = "lab6-cluster"
   log_analytics_workspace_enabled      = true
   role_based_access_control_enabled    = true
   identity_ids                         = [azurerm_user_assigned_identity.lab6T.id]
