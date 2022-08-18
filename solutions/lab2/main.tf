@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "lab2" {
 
 module "vnet" {
   source              = "Azure/vnet/azurerm"
-  resource_group_name = azurerm_resource_group.example.name
+  resource_group_name = azurerm_resource_group.lab2.name
   address_space       = ["10.1.0.0/16"]
   subnet_prefixes     = ["10.1.1.0/24"]
   subnet_names        = ["lab2-subnet"]
