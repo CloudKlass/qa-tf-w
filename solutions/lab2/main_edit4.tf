@@ -45,6 +45,7 @@ resource "azurerm_network_interface" "lab2" {
     name                          = "lab2_ip"
     subnet_id                     = azurerm_subnet.lab2.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.lab2publicpip.id
   }
 }
 
@@ -54,7 +55,7 @@ resource "azurerm_windows_virtual_machine" "lab2" {
   name                = "Lab2-machine"
   resource_group_name = azurerm_resource_group.lab2.name
   location            = azurerm_resource_group.lab2.location
-  size                = "Standard_B2S"
+  size                = "Standard_DS2_v2"
   admin_username      = "TFadminuser"
   admin_password      = "TF_P@$$w0rd1234!"
   network_interface_ids = [
@@ -73,4 +74,20 @@ resource "azurerm_windows_virtual_machine" "lab2" {
     sku       = "2022-Datacenter"
     version   = "latest"
   }
+  tags = {
+    Lab-edit = "SecondChange"
+  }
+}
+
+resource "azurerm_public_ip" "lab2publicpip" {
+  name                    = "lab2-pip"
+  location                = azurerm_resource_group.lab2.location
+  resource_group_name     = azurerm_resource_group.lab2.name
+  allocation_method       = "Dynamic"
+  idle_timeout_in_minutes = 30
+
+  tags = {
+    Lab_edit  = "ThirdChange"
+  }
+
 }

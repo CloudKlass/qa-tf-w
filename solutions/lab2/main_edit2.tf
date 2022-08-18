@@ -73,4 +73,7 @@ resource "azurerm_windows_virtual_machine" "lab2" {
     sku       = "2022-Datacenter"
     version   = "latest"
   }
+  tags = {
+    Lab-edit = "firstChange"
+  }
 }

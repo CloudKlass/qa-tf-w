@@ -54,7 +54,7 @@ resource "azurerm_windows_virtual_machine" "lab2" {
   name                = "Lab2-machine"
   resource_group_name = azurerm_resource_group.lab2.name
   location            = azurerm_resource_group.lab2.location
-  size                = "Standard_B2S"
+  size                = "Standard_DS2_v2"
   admin_username      = "TFadminuser"
   admin_password      = "TF_P@$$w0rd1234!"
   network_interface_ids = [
@@ -72,5 +72,8 @@ resource "azurerm_windows_virtual_machine" "lab2" {
     offer     = "WindowsServer"
     sku       = "2022-Datacenter"
     version   = "latest"
+  }
+  tags = {
+    Lab-edit = "SecondChange"
   }
 }
