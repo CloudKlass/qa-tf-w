@@ -23,11 +23,6 @@ module "vnet" {
   subnet_prefixes     = ["10.1.1.0/24"]
   subnet_names        = ["lab2-subnet"]
 
-  subnet_service_endpoints = {
-    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
-    subnet3 = ["Microsoft.AzureActiveDirectory"]
-  }
-
   tags = {
     environment = "lab2"
     }
