@@ -1,5 +1,5 @@
 resource "azurerm_service_plan" "lab5svcp" {
-  name                = "lab5svcp"
+  name                = "lab5serviceplan"
   resource_group_name = azurerm_resource_group.lab5.name
   location            = azurerm_resource_group.lab5.location
   os_type             = "Linux"
