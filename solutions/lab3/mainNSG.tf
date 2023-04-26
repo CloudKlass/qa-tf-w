@@ -11,7 +11,7 @@ resource "azurerm_network_security_group" "lab3nsg" {
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_ranges          = ["*"]
+    source_port_ranges          = [3389]
     destination_port_ranges     = [3389]
     source_address_prefix      = "Internet"
     destination_address_prefix = "*"
