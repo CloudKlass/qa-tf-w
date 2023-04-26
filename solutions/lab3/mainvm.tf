@@ -14,7 +14,7 @@ resource "azurerm_network_interface" "lab3" {
 
 
 resource "azurerm_windows_virtual_machine" "lab3" {
-  name                = "lab3-machine"
+  name                = "VM3"
   resource_group_name = azurerm_resource_group.lab3.name
   location            = azurerm_resource_group.lab3.location
   size                = "Standard_B2S"
