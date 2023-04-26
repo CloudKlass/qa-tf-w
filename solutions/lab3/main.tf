@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "lab3" {
-  name     = "RG-lab3"
+  name     = "RG3"
   location = "West Europe"
 }
 
