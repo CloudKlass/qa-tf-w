@@ -29,7 +29,7 @@ resource "random_id" "lab5saname" {
  }
 
 
-resource "azurerm_storage_account" "lab3bsa" {
+resource "azurerm_storage_account" "lab5sa" {
   name                     = "lab5${lower(random_id.lab5saname.hex)}"
   resource_group_name      = azurerm_resource_group.lab5.name
   location                 = azurerm_resource_group.lab5.location
