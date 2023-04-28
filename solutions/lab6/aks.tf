@@ -4,7 +4,7 @@ resource "random_id" "prefix" {
 }
 resource "azurerm_resource_group" "lab6" {
   location = var.location
-  name     = "${random_id.prefix.hex}-rg"
+  name     = "RG6"
 }
 
 resource "azurerm_virtual_network" "lab6T" {
@@ -41,7 +41,7 @@ module "aks" {
   agents_max_count = 2
   agents_max_pods  = 100
   agents_min_count = 1
-  agents_pool_name = "lab6nodes"
+  agents_pool_name = "vmscaleset1"
   agents_tags = {
     "Agent" : "agentTag"
   }
@@ -66,7 +66,7 @@ module "aks" {
   os_disk_size_gb                         = 60
   private_cluster_enabled                 = false #This is only being disabled due to the lab. This exposes the cluster API public. SHOULD create a VM in VNET and access from there with kubectl commands
   rbac_aad_managed                        = true
-  sku_tier                                = "Paid"
+  sku_tier                                = "Standard"
   vnet_subnet_id                          = azurerm_subnet.lab6T.id
 
   depends_on = [azurerm_resource_group.lab6]
